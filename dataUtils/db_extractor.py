@@ -4,16 +4,10 @@ import sys
 import unicodedata
 import re
 import pickle
+import argparse
 
 from urllib.parse import unquote
 from tqdm import tqdm
-
-#input:
-input_file = sys.argv[1]
-db_path = sys.argv[2]
-#output
-output_file = sys.argv[3]
-
 
 EDGE_XY = re.compile(r'<a href="(.*?)">(.*?)</a>')
 def get_edges(sentence):
@@ -88,51 +82,63 @@ class DocDB(object):
     def get_doc_title(self, doc_id):
         return self._get_doc_key(doc_id, 'title')
 
-doc_db = DocDB(db_path)
-
-# 1. map title to ID
-title_to_id = {}
-doc_ids = doc_db.get_doc_ids()
-for doc_id in doc_ids:
-    title = doc_db.get_doc_title(doc_id)
-    if title not in title_to_id:
-        title_to_id[title] = doc_id
-
-# 2. extract hyperlink and NER
-input_data = json.load(open(input_file, 'r'))
-print(len(input_data))
-output_data = {}
-for data in input_data:
-    context = dict(data['context'])
-    for title in context.keys():
+def title_to_id_extractor(doc_db: DocDB):
+    # 1. map title to ID
+    title_to_id = {}
+    doc_ids = doc_db.get_doc_ids()
+    for doc_id in doc_ids:
+        title = doc_db.get_doc_title(doc_id)
         if title not in title_to_id:
-            print("{} not exist in DB".format(title))
-        else:
-            doc_id = title_to_id[title]
-            text_with_links = pickle.loads(doc_db.get_doc_text_with_links(doc_id))
-            text_ner = pickle.loads(doc_db.get_doc_ner(doc_id))
+            title_to_id[title] = doc_id
+    print('Number of documents in DB = {}'.format(len(title_to_id)))
+    return title_to_id
 
-            hyperlink_titles, hyperlink_spans = [], []
-            hyperlink_paras = []
-            for i, sentence in enumerate(text_with_links):
-                _lt, _ls, _lp = [], [], []
+def hyperlink_ner_extractor(doc_db: DocDB, input_data):
+    output_data = {}
+    for data in input_data:
+        context = dict(data['context'])
+        for title in context.keys():
+            if title not in title_to_id:
+                print("{} not exist in DB".format(title))
+            else:
+                doc_id = title_to_id[title]
+                text_with_links = pickle.loads(doc_db.get_doc_text_with_links(doc_id))
+                text_ner = pickle.loads(doc_db.get_doc_ner(doc_id))
 
-                t = get_edges(sentence)
-                if len(t) > 0:
-                    for link_title, mention_entity in t:
-                        if link_title in title_to_id:
-                            _lt.append(link_title)
-                            _ls.append(mention_entity)
-                            doc_text = pickle.loads(doc_db.get_doc_text(title_to_id[link_title]))
-                            _lp.append(doc_text)
+                hyperlink_titles, hyperlink_spans = [], []
+                hyperlink_paras = []
+                for i, sentence in enumerate(text_with_links):
+                    _lt, _ls, _lp = [], [], []
 
-                hyperlink_titles.append(_lt)
-                hyperlink_spans.append(_ls)
-                hyperlink_paras.append(_lp)
+                    t = get_edges(sentence)
+                    if len(t) > 0:
+                        for link_title, mention_entity in t:
+                            if link_title in title_to_id:
+                                _lt.append(link_title)
+                                _ls.append(mention_entity)
+                                doc_text = pickle.loads(doc_db.get_doc_text(title_to_id[link_title]))
+                                _lp.append(doc_text)
 
-            output_data[title] = {'hyperlink_titles': hyperlink_titles,
-                                  'hyperlink_paras': hyperlink_paras,
-                                  'hyperlink_spans': hyperlink_spans,
-                                  'text_ner': text_ner}
+                    hyperlink_titles.append(_lt)
+                    hyperlink_spans.append(_ls)
+                    hyperlink_paras.append(_lp)
 
-json.dump(output_data, open(output_file, 'w'))
+                output_data[title] = {'hyperlink_titles': hyperlink_titles,
+                                      'hyperlink_paras': hyperlink_paras,
+                                      'hyperlink_spans': hyperlink_spans,
+                                      'text_ner': text_ner}
+    return output_data
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('input_data_file', type=str, help='/path/to/input/data/file')
+    parser.add_argument('db_path', type=str, help='/path/to/saved/db.db')
+    parser.add_argument('out_data_file', type=str, help='/path/to/saved/data/file')
+    args = parser.parse_args()
+
+    doc_db = DocDB(db_path=args.db_path)
+    title_to_id = title_to_id_extractor(doc_db=doc_db)
+
+    input_data = json.load(open(args.input_data_file, 'r'))
+    output_data = hyperlink_ner_extractor(doc_db=doc_db, input_data=input_data)
+    json.dump(output_data, open(args.out_data_file, 'w'))
