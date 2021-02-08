@@ -34,7 +34,7 @@ def hyper_link_ner_extractor(doc_db: DocDB, title_to_id: dict):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('db_path', type=str, default=None, required=True, help='/path/to/saved/db.db')
+    parser.add_argument('--db_path', type=str, default=None, required=True, help='/path/to/saved/db.db')
     args = parser.parse_args()
     for key, value in vars(args).items():
         print(key, value)
