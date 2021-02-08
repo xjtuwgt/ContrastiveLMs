@@ -30,7 +30,6 @@ download() {
 
 preprocess() {
   echo "1. Data Analysis of Database"
-  echo $DATA_ROOT/knowledge/enwiki_ner.db
   # Input: enwiki_ner.db
   # Output: doc_link_ner.json
   python dataUtils/db_stat_infor.py --data_base $DATA_ROOT/knowledge/enwiki_ner.db

@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-
 import pickle
 import argparse
 from dataUtils.db_extractor import DocDB, get_edges, title_to_id_extractor
