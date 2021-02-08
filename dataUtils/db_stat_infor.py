@@ -2,21 +2,9 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
-import sys
 import pickle
 import argparse
-from dataUtils.db_extractor import DocDB, get_edges
-
-def title_to_id_extractor(doc_db: DocDB):
-    # 1. map title to ID
-    title_to_id = {}
-    doc_ids = doc_db.get_doc_ids()
-    for doc_id in doc_ids:
-        title = doc_db.get_doc_title(doc_id)
-        if title not in title_to_id:
-            title_to_id[title] = doc_id
-    print('Number of documents in DB = {}'.format(len(title_to_id)))
-    return title_to_id
+from dataUtils.db_extractor import DocDB, get_edges, title_to_id_extractor
 
 def hyper_link_ner_extractor(doc_db: DocDB, title_to_id: dict):
     output_data = {}
