@@ -1,1 +1,3 @@
 1. download data and construct database: Based base on HGN: https://github.com/yuwfan/HGN
+#Database information: KEY, url, title, text, text_with_links, text_ner, sent_num (5,233,329 documents)
+2. data preprocess
