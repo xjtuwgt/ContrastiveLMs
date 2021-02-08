@@ -40,6 +40,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('db_path', type=str, help='/path/to/saved/db.db')
     args = parser.parse_args()
+    for key, value in vars(args).items():
+        print(key, value)
 
     db_path = args.db_path
     doc_db = DocDB(db_path=db_path)
