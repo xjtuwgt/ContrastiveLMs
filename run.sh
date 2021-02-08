@@ -32,7 +32,7 @@ preprocess() {
   echo "1. Data Analysis of Database"
   # Input: enwiki_ner.db
   # Output: doc_link_ner.json
-  python dataUtils/db_stat_infor.py --db_path $DATA_ROOT/knowledge/enwiki_ner.db
+  python dataUtils/db_stat_infor.py --data_base $DATA_ROOT/knowledge/enwiki_ner.db
 }
 
 for proc in "download" "preprocess"
