@@ -45,5 +45,5 @@ if __name__ == '__main__':
         print(key, value)
 
     db_path = args.db_path
-    doc_db = DocDB(db_path=db_path)
-    title_to_id = title_to_id_extractor(doc_db=doc_db)
+    # doc_db = DocDB(db_path=db_path)
+    # title_to_id = title_to_id_extractor(doc_db=doc_db)
