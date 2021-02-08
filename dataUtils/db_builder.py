@@ -140,7 +140,7 @@ if __name__ == '__main__':
     parser.add_argument('--preprocess', type=str, default=None,
                         help=('File path to a python module that defines '
                               'a `preprocess` function'))
-    parser.add_argument('--num-workers', type=int, default=None,
+    parser.add_argument('--num-workers', type=int, default=16,
                         help='Number of CPU processes (for tokenizing, etc)')
     args = parser.parse_args()
 
