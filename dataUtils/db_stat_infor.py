@@ -58,7 +58,7 @@ def log_dictionary(dict_name, data_dict: dict):
     total_num = sum([x[1] for x in data_dict.items()])
     for key, value in sorted(data_dict.items()):
         print('{}\t{}\t{}'.format(dict_name, key, value * 1.0/total_num))
-    print('-' * 10)
+    print('-' * 10, total_num)
 
 
 if __name__ == '__main__':
