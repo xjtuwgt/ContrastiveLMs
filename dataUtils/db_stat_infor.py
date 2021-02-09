@@ -20,32 +20,35 @@ def hyper_link_ner_extractor(doc_db: DocDB, title_to_id: dict):
         # if 0 in ent_num_sent:
         #     print(text_ner)
         ent_para = sum(ent_num_sent)
-        if ent_para == 0:
-            print('{}\n{}'.format(title, text_ner))
-            no_ent_para_count += 1
         ent_num_sent_list += ent_num_sent
         ent_num_para_list.append(ent_para)
         # print('ner {}\n{}'.format(len(text_ner), text_ner))
         # print('text {}\n{}'.format(len(text_with_links), text_with_links))
         # print('+' * 75)
 
-        # hyperlink_titles, hyperlink_spans = [], []
-        # hyperlink_paras = []
-        # for i, sentence in enumerate(text_with_links):
-        #     _lt, _ls, _lp = [], [], []
-        #     t = get_edges(sentence)
-        #     if len(t) > 0:
-        #         for link_title, mention_entity in t:
-        #             if link_title in title_to_id:
-        #                 _lt.append(link_title)
-        #                 _ls.append(mention_entity)
-        #                 doc_text = pickle.loads(doc_db.get_doc_text(title_to_id[link_title]))
-        #                 _lp.append(doc_text)
-        #
-        #     hyperlink_titles.append(_lt)
-        #     hyperlink_spans.append(_ls)
-        #     hyperlink_paras.append(_lp)
-        #
+        hyperlink_titles, hyperlink_spans = [], []
+        hyperlink_paras = []
+        for i, sentence in enumerate(text_with_links):
+            _lt, _ls, _lp = [], [], []
+            t = get_edges(sentence)
+            if len(t) > 0:
+                for link_title, mention_entity in t:
+                    if link_title in title_to_id:
+                        _lt.append(link_title)
+                        _ls.append(mention_entity)
+                        doc_text = pickle.loads(doc_db.get_doc_text(title_to_id[link_title]))
+                        _lp.append(doc_text)
+
+            hyperlink_titles.append(_lt)
+            hyperlink_spans.append(_ls)
+            hyperlink_paras.append(_lp)
+
+        if ent_para == 0:
+            print('{}\n{}'.format(title, text_ner))
+            print('titles {}'.format(hyperlink_titles))
+            print('spans {}'.format(hyperlink_titles))
+            print('paras {}'.format(hyperlink_paras))
+            no_ent_para_count += 1
         # output_data[title] = {'hyperlink_titles': hyperlink_titles,
         #                       'hyperlink_paras': hyperlink_paras,
         #                       'hyperlink_spans': hyperlink_spans,
