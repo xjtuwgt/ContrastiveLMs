@@ -9,6 +9,8 @@ def hyper_link_ner_extractor(doc_db: DocDB, title_to_id: dict):
         text_with_links = pickle.loads(doc_db.get_doc_text_with_links(doc_id))
         text_ner = pickle.loads(doc_db.get_doc_ner(doc_id))
         print(text_ner)
+        print('*' * 75)
+        print(text_with_links)
 
         hyperlink_titles, hyperlink_spans = [], []
         hyperlink_paras = []
@@ -38,5 +40,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     doc_db = DocDB(db_path=args.db_path)
-    title_to_id = title_to_id_extractor(doc_db=doc_db, row_num=1000)
+    title_to_id = title_to_id_extractor(doc_db=doc_db, row_num=5)
     hyper_link_ner_extractor(doc_db=doc_db, title_to_id=title_to_id)
