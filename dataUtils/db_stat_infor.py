@@ -50,13 +50,13 @@ def hyper_link_ner_extractor(doc_db: DocDB, title_to_id: dict):
         #                       'hyperlink_paras': hyperlink_paras,
         #                       'hyperlink_spans': hyperlink_spans,
         #                       'text_ner': text_ner}
-    sent_number_count_dict = dict(Counter(sent_number_list))
-    log_dictionary('sent_num', sent_number_count_dict)
-    ent_para_count_dict = dict(Counter(ent_num_para_list))
-    log_dictionary('ent_para', ent_para_count_dict)
-    ent_sent_count_dict = dict(Counter(ent_num_sent_list))
-    log_dictionary('ent_sent', ent_sent_count_dict)
-    print('Number of paragraph w/o ents = {}'.format(no_ent_para_count))
+    # sent_number_count_dict = dict(Counter(sent_number_list))
+    # log_dictionary('sent_num', sent_number_count_dict)
+    # ent_para_count_dict = dict(Counter(ent_num_para_list))
+    # log_dictionary('ent_para', ent_para_count_dict)
+    # ent_sent_count_dict = dict(Counter(ent_num_sent_list))
+    # log_dictionary('ent_sent', ent_sent_count_dict)
+    print('Number of paragraph w/o entities = {}'.format(no_ent_para_count))
 
 def log_dictionary(dict_name, data_dict: dict):
     total_num = sum([x[1] for x in data_dict.items()])
@@ -71,5 +71,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     doc_db = DocDB(db_path=args.db_path)
-    title_to_id = title_to_id_extractor(doc_db=doc_db, row_num=50000)
+    title_to_id = title_to_id_extractor(doc_db=doc_db, row_num=5000)
     hyper_link_ner_extractor(doc_db=doc_db, title_to_id=title_to_id)
