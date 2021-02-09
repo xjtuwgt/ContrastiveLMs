@@ -21,7 +21,7 @@ def hyper_link_ner_extractor(doc_db: DocDB, title_to_id: dict):
         #     print(text_ner)
         ent_para = sum(ent_num_sent)
         if ent_para == 0:
-            print('{}\n{}'.format(title, text_with_links))
+            print('{}\n{}'.format(title, text_ner))
             no_ent_para_count += 1
         ent_num_sent_list += ent_num_sent
         ent_num_para_list.append(ent_para)
