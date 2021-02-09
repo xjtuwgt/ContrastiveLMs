@@ -1,12 +1,11 @@
 import pickle
 import argparse
+from tqdm import tqdm
 from dataUtils.db_extractor import DocDB, get_edges, title_to_id_extractor
 
 def hyper_link_ner_extractor(doc_db: DocDB, title_to_id: dict):
     output_data = {}
-    doc_ids = doc_db.get_doc_ids()
-    for doc_id in doc_ids:
-        title = doc_db.get_doc_title(doc_id)
+    for title, doc_id in tqdm(title_to_id.items()):
         text_with_links = pickle.loads(doc_db.get_doc_text_with_links(doc_id))
         text_ner = pickle.loads(doc_db.get_doc_ner(doc_id))
 
@@ -37,6 +36,7 @@ if __name__ == '__main__':
     parser.add_argument('--db_path', type=str, default=None, required=True, help='/path/to/saved/db.db')
     args = parser.parse_args()
 
-    db_path = args.db_path
-    doc_db = DocDB(db_path=db_path)
-    title_to_id = title_to_id_extractor(doc_db=doc_db, row_num=90000)
+    doc_db = DocDB(db_path=args.db_path)
+    title_to_id = title_to_id_extractor(doc_db=doc_db, row_num=5000)
+
+    hyper_link_ner_extractor(doc_db=doc_db, title_to_id=title_to_id)
