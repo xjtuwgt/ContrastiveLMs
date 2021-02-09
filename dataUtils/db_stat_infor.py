@@ -9,7 +9,7 @@ def hyper_link_ner_extractor(doc_db: DocDB, title_to_id: dict):
         text_with_links = pickle.loads(doc_db.get_doc_text_with_links(doc_id))
         text_ner = pickle.loads(doc_db.get_doc_ner(doc_id))
         print('ner {}\n{}'.format(len(text_ner), text_ner))
-        print('text with link\n {}'.format(text_with_links))
+        print('text {}\n{}'.format(len(text_with_links), text_with_links))
         print('+' * 75)
 
         hyperlink_titles, hyperlink_spans = [], []
