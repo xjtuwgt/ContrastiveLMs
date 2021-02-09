@@ -52,6 +52,13 @@ class DocDB(object):
         cursor.close()
         return results
 
+    def get_offset_doc_ids(self, row_num: int=5000, offset: int = 0):
+        cursor = self.connection.cursor()
+        cursor.execute("SELECT id FROM documents " + " LIMIT " + str(row_num) + " OFFSET " + str(offset) + ";")
+        results = [r[0] for r in cursor.fetchall()]
+        cursor.close()
+        return results
+
     def _get_doc_key(self, doc_id, key):
         """Fetch the raw text of the doc for 'doc_id'."""
         cursor = self.connection.cursor()
@@ -82,10 +89,15 @@ class DocDB(object):
     def get_doc_title(self, doc_id):
         return self._get_doc_key(doc_id, 'title')
 
-def title_to_id_extractor(doc_db: DocDB):
+def title_to_id_extractor(doc_db: DocDB, row_num=0, offset=0):
     # 1. map title to ID
     title_to_id = {}
-    doc_ids = doc_db.get_doc_ids()
+    if row_num <=0:
+        doc_ids = doc_db.get_doc_ids()
+    elif row_num > 0 and offset >=0:
+        doc_ids = doc_db.get_offset_doc_ids(row_num=row_num, offset=offset)
+    else:
+        raise 'Error input numbers: row_num = {}, and offset = {}'.format(row_num, offset)
     for doc_id in tqdm(doc_ids):
         title = doc_db.get_doc_title(doc_id)
         if title not in title_to_id:
