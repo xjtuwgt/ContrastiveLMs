@@ -10,7 +10,7 @@ def hyper_link_ner_extractor(doc_db: DocDB, title_to_id: dict):
     sent_number_list = []
     ent_num_para_list = []
     ent_num_sent_list = []
-
+    no_ent_para_count = 0
     for title, doc_id in tqdm(title_to_id.items()):
         text_with_links = pickle.loads(doc_db.get_doc_text_with_links(doc_id))
         text_ner = pickle.loads(doc_db.get_doc_ner(doc_id))
@@ -20,8 +20,9 @@ def hyper_link_ner_extractor(doc_db: DocDB, title_to_id: dict):
         # if 0 in ent_num_sent:
         #     print(text_ner)
         ent_para = sum(ent_num_sent)
-        if ent_para:
+        if ent_para == 0:
             print('{}\n{}'.format(title, text_with_links))
+            no_ent_para_count += 1
         ent_num_sent_list += ent_num_sent
         ent_num_para_list.append(ent_para)
         # print('ner {}\n{}'.format(len(text_ner), text_ner))
@@ -55,6 +56,7 @@ def hyper_link_ner_extractor(doc_db: DocDB, title_to_id: dict):
     log_dictionary('ent_para', ent_para_count_dict)
     ent_sent_count_dict = dict(Counter(ent_num_sent_list))
     log_dictionary('ent_sent', ent_sent_count_dict)
+    print('Number of paragraph w/o ents = {}'.format(no_ent_para_count))
 
 def log_dictionary(dict_name, data_dict: dict):
     total_num = sum([x[1] for x in data_dict.items()])
