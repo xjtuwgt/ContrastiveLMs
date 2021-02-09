@@ -17,8 +17,8 @@ def hyper_link_ner_extractor(doc_db: DocDB, title_to_id: dict):
         assert len(text_with_links) == len(text_ner)
         sent_number_list.append(len(text_with_links))
         ent_num_sent = [len(_) for _ in text_ner]
-        if 0 in ent_num_sent:
-            print(text_ner)
+        # if 0 in ent_num_sent:
+        #     print(text_ner)
         ent_para = sum(ent_num_sent)
         ent_num_sent_list += ent_num_sent
         ent_num_para_list.append(ent_para)
@@ -56,7 +56,8 @@ def hyper_link_ner_extractor(doc_db: DocDB, title_to_id: dict):
 
 def log_dictionary(dict_name, data_dict: dict):
     for key, value in data_dict.items():
-        print('{}: {} -> {}'.format(dict_name, key, value))
+        print('{}\t{}\t{}'.format(dict_name, key, value))
+    print('-' * 10)
 
 
 if __name__ == '__main__':
