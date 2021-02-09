@@ -45,9 +45,10 @@ def hyper_link_ner_extractor(doc_db: DocDB, title_to_id: dict):
 
         if ent_para == 0:
             print('{}\n{}'.format(title, text_ner))
-            print('titles {}'.format(hyperlink_titles))
-            print('spans {}'.format(hyperlink_titles))
-            print('paras {}'.format(hyperlink_paras))
+            print(text_with_links)
+            # print('titles {}'.format(hyperlink_titles))
+            # print('spans {}'.format(hyperlink_titles))
+            # print('paras {}'.format(hyperlink_paras))
             no_ent_para_count += 1
         # output_data[title] = {'hyperlink_titles': hyperlink_titles,
         #                       'hyperlink_paras': hyperlink_paras,
