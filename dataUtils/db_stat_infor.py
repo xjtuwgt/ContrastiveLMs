@@ -38,5 +38,4 @@ if __name__ == '__main__':
 
     doc_db = DocDB(db_path=args.db_path)
     title_to_id = title_to_id_extractor(doc_db=doc_db, row_num=5000)
-
     hyper_link_ner_extractor(doc_db=doc_db, title_to_id=title_to_id)
