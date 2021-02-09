@@ -8,9 +8,9 @@ def hyper_link_ner_extractor(doc_db: DocDB, title_to_id: dict):
     for title, doc_id in tqdm(title_to_id.items()):
         text_with_links = pickle.loads(doc_db.get_doc_text_with_links(doc_id))
         text_ner = pickle.loads(doc_db.get_doc_ner(doc_id))
-        print(text_ner)
-        print('*' * 75)
-        print(text_with_links)
+        print('ner {}\n{}'.format(len(text_ner), text_ner))
+        print('text with link\n {}'.format(text_with_links))
+        print('+' * 75)
 
         hyperlink_titles, hyperlink_spans = [], []
         hyperlink_paras = []
