@@ -55,8 +55,9 @@ def hyper_link_ner_extractor(doc_db: DocDB, title_to_id: dict):
     log_dictionary('ent_sent', ent_sent_count_dict)
 
 def log_dictionary(dict_name, data_dict: dict):
+    total_num = sum([x[0] for x in data_dict.items()])
     for key, value in sorted(data_dict.items()):
-        print('{}\t{}\t{}'.format(dict_name, key, value))
+        print('{}\t{}\t{}'.format(dict_name, key, value * 1.0/total_num))
     print('-' * 10)
 
 
