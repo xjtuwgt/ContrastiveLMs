@@ -127,12 +127,9 @@ def store_contents(data_path, save_path, preprocess, num_workers=None):
     conn.commit()
     conn.close()
 
-
 # ------------------------------------------------------------------------------
 # Main.
 # ------------------------------------------------------------------------------
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('data_path', type=str, default=None, help='/path/to/data')
